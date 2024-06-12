@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -28,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -51,11 +54,11 @@ class MainActivity : ComponentActivity() {
 //список для всех зелий
 var listBottle =
     mutableStateListOf(
-        Bottle(50f,100f, Color.Blue),
-        Bottle(200f,100f, Color.Black),
-        Bottle(350f,100f, Color.Red),
-        Bottle(500f,100f, Color.Yellow),
-        Bottle(650f,100f, Color.Green)
+        Bottle(50f,100f, Color.Blue,R.drawable.blue),
+        Bottle(200f,100f, Color.Black, R.drawable.black),
+        Bottle(350f,100f, Color.Red, R.drawable.red),
+        Bottle(500f,100f, Color.Yellow, R.drawable.yellow),
+        Bottle(650f,100f, Color.Green, R.drawable.green)
     )
 
 
@@ -64,7 +67,7 @@ var listBottle =
 var listBottlesInBoiler = mutableListOf<Bottle>()
 
 //дата класс для зелья (координаты и цвет)
-data class Bottle(val offsetX:Float,val offsetY: Float, val color: Color)
+data class Bottle(val offsetX:Float,val offsetY: Float, val color: Color,val img:Int)
 //у каждого зелья одинаковая логика
 // если зелье попало в котел,  то оно удаляется из списка доступных зелий и добавляется в список с использованными зельями
 @Composable
@@ -78,8 +81,8 @@ private fun DragBottle( bottle: Bottle, index:Int){
     Box(
         Modifier
             .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
-            .background(bottle.color)
-            .size(50.dp)
+            //.background(bottle.color)
+            .size(40.dp, 70.dp)
             .pointerInput(Unit) {
                 detectDragGestures(
                     //движение
@@ -95,7 +98,12 @@ private fun DragBottle( bottle: Bottle, index:Int){
                         ) {
                             listBottlesInBoiler.add(bottle)
                             //listBottle.remove(bottle)
-                            Log.d("BOTTLE", listBottle.toList().toString())
+                            Log.d(
+                                "BOTTLE",
+                                listBottle
+                                    .toList()
+                                    .toString()
+                            )
                             Log.d("BOTTLE", listBottlesInBoiler.toString())
                         } else {
                             offsetX = bottle.offsetX
@@ -104,7 +112,10 @@ private fun DragBottle( bottle: Bottle, index:Int){
                     }
                 )
             }
-    )
+    ){
+        Image(painter = painterResource(id = bottle.img), contentDescription = null,
+            contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+    }
 
 }
 
@@ -128,26 +139,26 @@ private fun Alchemist(){
                     if(listBottlesInBoiler.size==2){
                         if(listBottlesInBoiler.any { it.color == Color.Red } &&
                             listBottlesInBoiler.any { it.color == Color.Blue }){
-                            listBottle.add(Bottle(800f,100f, Color.Magenta))
+                            listBottle.add(Bottle(800f,100f, Color.Magenta, R.drawable.magenta))
                         }
                         if(listBottlesInBoiler.any { it.color == Color.Yellow } &&
                             listBottlesInBoiler.any { it.color == Color.Blue }){
-                            listBottle.add(Bottle(50f,250f, Color.Cyan))
+                            listBottle.add(Bottle(50f,250f, Color.Cyan, R.drawable.cyan))
                         }
                         if(listBottlesInBoiler.any { it.color == Color.Red } &&
                             listBottlesInBoiler.any { it.color == Color.Green }){
-                            listBottle.add(Bottle(200f,250f, Color.DarkGray))
+                            listBottle.add(Bottle(200f,250f, Color.DarkGray, R.drawable.dark_gray))
                         }
                         if(listBottlesInBoiler.any { it.color == Color.Green } &&
                             listBottlesInBoiler.any { it.color == Color.Yellow }){
-                            listBottle.add(Bottle(350f,250f, Color.White))
+                            listBottle.add(Bottle(350f,250f, Color.White, R.drawable.white))
                         }
                         if(listBottlesInBoiler.any { it.color == Color.Black } ){
-                            listBottle.add(Bottle(500f,250f, Color.Black))
+                            listBottle.add(Bottle(500f,250f, Color.Black, R.drawable.black))
                         }
                     }else{
                         if(listBottlesInBoiler.size!=0)
-                            listBottle.add(Bottle(650f,250f, Color.Black))
+                            listBottle.add(Bottle(650f,250f, Color.Black, R.drawable.black))
                     }
 
                     listBottlesInBoiler.clear()
