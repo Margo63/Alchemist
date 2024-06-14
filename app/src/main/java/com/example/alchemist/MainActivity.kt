@@ -131,7 +131,11 @@ private fun Alchemist(){
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
     val density = LocalDensity.current
+
     Box(modifier = Modifier.fillMaxSize()){
+        Image(painter = painterResource(id = R.drawable.wallpaper), contentDescription = null,
+            contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+
         listBottle.forEachIndexed() { index, bottle -> DragBottle(bottle, index) }
 
 
