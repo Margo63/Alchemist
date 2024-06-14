@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -135,26 +136,30 @@ private fun Alchemist(){
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
             Column {
-                Button(onClick = {
+                Button(modifier = Modifier.fillMaxWidth(), onClick = {
                     if(listBottlesInBoiler.size==2){
-                        if(listBottlesInBoiler.any { it.color == Color.Red } &&
-                            listBottlesInBoiler.any { it.color == Color.Blue }){
+                        if(listBottlesInBoiler.any { it.color == Color.Red } && listBottlesInBoiler.any { it.color == Color.Blue }){
+
                             listBottle.add(Bottle(800f,100f, Color.Magenta, R.drawable.magenta))
-                        }
-                        if(listBottlesInBoiler.any { it.color == Color.Yellow } &&
-                            listBottlesInBoiler.any { it.color == Color.Blue }){
+
+                        } else if(listBottlesInBoiler.any { it.color == Color.Yellow } && listBottlesInBoiler.any { it.color == Color.Blue }){
+
                             listBottle.add(Bottle(50f,250f, Color.Cyan, R.drawable.cyan))
-                        }
-                        if(listBottlesInBoiler.any { it.color == Color.Red } &&
-                            listBottlesInBoiler.any { it.color == Color.Green }){
+
+                        } else if(listBottlesInBoiler.any { it.color == Color.Red } && listBottlesInBoiler.any { it.color == Color.Green }){
+
                             listBottle.add(Bottle(200f,250f, Color.DarkGray, R.drawable.dark_gray))
-                        }
-                        if(listBottlesInBoiler.any { it.color == Color.Green } &&
-                            listBottlesInBoiler.any { it.color == Color.Yellow }){
+
+                        }else if(listBottlesInBoiler.any { it.color == Color.Green } && listBottlesInBoiler.any { it.color == Color.Yellow }){
+
                             listBottle.add(Bottle(350f,250f, Color.White, R.drawable.white))
-                        }
-                        if(listBottlesInBoiler.any { it.color == Color.Black } ){
+
+                        }else if(listBottlesInBoiler.any { it.color == Color.Black } ){
+
                             listBottle.add(Bottle(500f,250f, Color.Black, R.drawable.black))
+
+                        } else{
+                            listBottle.add(Bottle(50f,400f, Color.Black, R.drawable.black))
                         }
                     }else{
                         if(listBottlesInBoiler.size!=0)
@@ -171,7 +176,11 @@ private fun Alchemist(){
                     .height(screenHeight / 3)
                     .width(screenWidth - 50.dp)
                     .background(Color.DarkGray)
-                )
+                    .align(Alignment.CenterHorizontally)
+                ){
+                    Image(painter = painterResource(id = R.drawable.boiler), contentDescription = null,
+                        contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+                }
             }
 
         }
